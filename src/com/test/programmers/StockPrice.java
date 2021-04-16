@@ -1,6 +1,8 @@
 package com.test.programmers;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class StockPrice {
 
@@ -39,9 +41,20 @@ public class StockPrice {
     }
 
     public int[] solution(int[] prices) {
-        int[] answer = {1,2};
+        int[] answer = new int[prices.length];
 
+        Queue<Integer> pricesQueue = new LinkedList<>();
+
+        for( int i : prices){
+            int j = i;
+
+            for( ; j < prices.length && prices[j] <= prices[i] ; j++ ){
+
+            }
+
+        }
 
         return answer;
     }
+
 }
