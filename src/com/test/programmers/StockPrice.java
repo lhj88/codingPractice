@@ -43,18 +43,37 @@ public class StockPrice {
     public int[] solution(int[] prices) {
         int[] answer = new int[prices.length];
 
-        Queue<Integer> pricesQueue = new LinkedList<>();
+        //Queue<Integer> pricesQueue = new LinkedList<>();
 
-        for( int i : prices){
-            int j = i;
-
-            for( ; j < prices.length && prices[j] <= prices[i] ; j++ ){
-
-            }
-
+        for( int i = 0 ; i < prices.length ; i++){
+            int result = 가격유지기간_구하기(prices,i);
+            answer[i] = result;
         }
-
         return answer;
     }
 
+    private int 가격유지기간_구하기(int[] prices, int criteriaIndex) {
+        int result;
+
+        if(criteriaIndex == prices.length -1){
+            result = 마지막은_0_고정();
+        }else{
+            result = 마지막제외_가격유지기간_구하기(prices, criteriaIndex);
+        }
+
+        return result;
+    }
+
+    private int 마지막제외_가격유지기간_구하기(int[] prices, int criteriaIndex) {
+        int nextIndex = 1;
+        while(criteriaIndex +nextIndex < prices.length-1
+                && prices[criteriaIndex +nextIndex]>= prices[criteriaIndex]){
+            nextIndex++;
+        }
+        return nextIndex;
+    }
+
+    private int 마지막은_0_고정() {
+        return 0;
+    }
 }
