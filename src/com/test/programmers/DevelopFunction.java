@@ -1,9 +1,12 @@
 package com.test.programmers;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DevelopFunction {
+
+    static final int DEVELOPMENT_COMPLETION = 100;
+
     public static void main(String[] args) {
         /**
          * 문제 설명
@@ -39,12 +42,52 @@ public class DevelopFunction {
          *
          * ※ 공지 - 2020년 7월 14일 테스트케이스가 추가되었습니다.
          */
+        int[] progresses = {93,30,55};
+        int[] speeds = {1,30,5};
+        DevelopFunction developFunction = new DevelopFunction();
+        int[] result = developFunction.solution(progresses, speeds);
+
+        System.out.println("result = " + Arrays.toString(result));
     }
 
     public int[] solution(int[] progresses, int[] speeds) {
-        int[] answer = {};
+        int[] answer;
 
-        //LinkedList<> objects = new LinkedList<>();
+        // 데이터를 큐로 변환
+        Queue<Integer> progressQueue = getQueueWithArray(progresses);
+        Queue<Integer> speedQueue = getQueueWithArray(speeds);
+
+        Vector<Integer> vector = new Vector<>();
+
+        // 전체 작업완료까지 loop
+        while(!progressQueue.isEmpty()){
+
+            goProgress(progressQueue, speedQueue);
+
+            checkProgressCompletion(progressQueue, speedQueue, vector);
+        }
+
+        // 벡터를 int array로 변환
+        answer = vector.stream().mapToInt(Integer::intValue).toArray();
+
         return answer;
     }
+
+    private LinkedList<Integer> getQueueWithArray(int[] progresses) {
+        return Arrays.stream(progresses).mapToObj(i -> i).collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    private void goProgress(Queue<Integer> progressQueue, Queue<Integer> speedQueue) {
+        /*progressQueue.forEach( task -> {
+            System.out.println("task = " + task);
+        });*/
+        for(int i = 0; i < progressQueue.size(); i++){
+            //int
+        }
+    }
+
+    private void checkProgressCompletion(Queue<Integer> progressQueue, Queue<Integer> speedQueue, Vector<Integer> vector) {
+
+    }
+
 }
