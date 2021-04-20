@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class DevelopFunction {
 
-    static final int DEVELOPMENT_COMPLETION = 100;
+    static final int PROGRESS_COMPLETION = 100;
 
     public static void main(String[] args) {
         /**
@@ -42,8 +42,10 @@ public class DevelopFunction {
          *
          * ※ 공지 - 2020년 7월 14일 테스트케이스가 추가되었습니다.
          */
-        int[] progresses = {93,30,55};
-        int[] speeds = {1,30,5};
+        //int[] progresses = {93,30,55};
+        //int[] speeds = {1,30,5};
+        int[] progresses = {95, 90, 99, 99, 80, 99};
+        int[] speeds = {1, 1, 1, 1, 1, 1};
         DevelopFunction developFunction = new DevelopFunction();
         int[] result = developFunction.solution(progresses, speeds);
 
@@ -61,9 +63,7 @@ public class DevelopFunction {
 
         // 전체 작업완료까지 loop
         while(!progressQueue.isEmpty()){
-
-            goProgress(progressQueue, speedQueue);
-
+            doProgress(progressQueue, speedQueue);
             checkProgressCompletion(progressQueue, speedQueue, vector);
         }
 
@@ -77,17 +77,34 @@ public class DevelopFunction {
         return Arrays.stream(progresses).mapToObj(i -> i).collect(Collectors.toCollection(LinkedList::new));
     }
 
-    private void goProgress(Queue<Integer> progressQueue, Queue<Integer> speedQueue) {
-        /*progressQueue.forEach( task -> {
-            System.out.println("task = " + task);
-        });*/
+    private void doProgress(Queue<Integer> progressQueue, Queue<Integer> speedQueue) {
         for(int i = 0; i < progressQueue.size(); i++){
-            //int
+            // 큐에서 프로그레스를 꺼내 스피드를 더하고 다시 넣는다.
+            int progress = progressQueue.poll();
+            int speed = speedQueue.poll();
+
+            progress += speed;
+
+            progressQueue.add(progress);
+            speedQueue.add(speed);
         }
     }
 
     private void checkProgressCompletion(Queue<Integer> progressQueue, Queue<Integer> speedQueue, Vector<Integer> vector) {
+        int completeCount = 0;
 
+        // 완료카운트 가져옴
+        while(!progressQueue.isEmpty() && progressQueue.peek() >= PROGRESS_COMPLETION){
+            progressQueue.poll();
+            speedQueue.poll();
+
+            completeCount++;
+        }
+
+        // 완료카운트 저장
+        if(completeCount > 0){
+            vector.add(completeCount);
+        }
     }
 
 }
