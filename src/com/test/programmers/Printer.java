@@ -40,11 +40,11 @@ public class Printer {
      * 6개의 문서(A, B, C, D, E, F)가 인쇄 대기목록에 있고 중요도가 1 1 9 1 1 1 이므로 C D E F A B 순으로 인쇄합니다.
      */
 
-    static final int NO_PRINT = -1;
-
     public static void main(String[] args) {
-        int[] priorities = {2, 1, 3, 2};
-        int location = 2;
+        //int[] priorities = {2, 1, 3, 2};
+        //int location = 2;
+        int[] priorities = {1, 1, 9, 1, 1, 1};
+        int location = 0;
 
         Printer printer = new Printer();
 
@@ -58,21 +58,29 @@ public class Printer {
         Queue<Document> printerQueue = createQueue(priorities, location);
 
         while(!printerQueue.isEmpty()){
-            int printDocument = NO_PRINT;
+            Document checkDocument = printerQueue.poll();
 
-            if(isPrintTime(printerQueue)){
-                printDocument = progressPrinterQueue(printerQueue);
+            if(isPrintTime(checkDocument, printerQueue)){
                 answer++;
-
-                if(isEqualLocation()){
+                if(checkDocument.getIndex() == location)
                     break;
-                }
             }else{
-                postponePrint(printerQueue);
+                printerQueue.add(checkDocument);
             }
         }
 
         return answer;
+    }
+
+    private boolean isPrintTime(Document checkDocument, Queue<Document> printerQueue) {
+        boolean result = true;
+        long count = printerQueue.stream()
+                .filter(d -> d.getPriority() > checkDocument.getPriority())
+                .count();
+        if(count > 0){
+            result = false;
+        }
+        return result;
     }
 
     private Queue<Document> createQueue(int[] priorities, int location) {
