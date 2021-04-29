@@ -1,4 +1,4 @@
-package com.test.programmers;
+package com.test.programmers.stackqueue;
 
 import java.util.Arrays;
 import java.util.LinkedList;

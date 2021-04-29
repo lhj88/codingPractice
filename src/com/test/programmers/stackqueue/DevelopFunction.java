@@ -1,4 +1,4 @@
-package com.test.programmers;
+package com.test.programmers.stackqueue;
 
 import java.util.*;
 import java.util.stream.Collectors;
