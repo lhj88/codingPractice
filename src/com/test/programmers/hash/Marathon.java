@@ -1,8 +1,6 @@
 package com.test.programmers.hash;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Vector;
 
 public class Marathon {
