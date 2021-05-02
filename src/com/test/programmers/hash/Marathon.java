@@ -1,6 +1,7 @@
 package com.test.programmers.hash;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Vector;
 
 public class Marathon {
@@ -44,14 +45,29 @@ public class Marathon {
 
     public String solution(String[] participant, String[] completion) {
         String answer = "";
-        Vector<String> participantVector = new Vector<>(Arrays.asList(participant));
 
+        HashMap<String, Integer> map = new HashMap<>();
         for (String s : completion) {
-
-            //participantVector.remove(participantVector.indexOf(s));
-            participantVector.remove(s);
+            if(map.containsKey(s)){
+                map.put(s, map.get(s)+1);
+            }else{
+                map.put(s, 1);
+            }
         }
-        answer = participantVector.firstElement();
+
+        try{
+            for (int i = 0; i < participant.length; i++) {
+                answer = participant[i];
+                int cnt = map.get(answer);
+                map.put(answer, --cnt);
+                if(cnt < 0 ){
+                    break;
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         return answer;
     }
 }
