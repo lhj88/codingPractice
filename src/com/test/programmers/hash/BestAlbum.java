@@ -1,8 +1,6 @@
 package com.test.programmers.hash;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class BestAlbum {
 
@@ -51,26 +49,35 @@ public class BestAlbum {
     public int[] solution(String[] genres, int[] plays) {
         int[] answer = {};
 
-        HashMap<String, PlaysNode> clothesMap = initHashMap(genres, plays);
+        List<GenreNode> genreMap = initList(genres, plays);
 
         return answer;
     }
 
-    private HashMap<String, PlaysNode> initHashMap(String[] genres, int[] plays) {
-        HashMap<String, PlaysNode> map = new HashMap<>();
+    private List<GenreNode> initList(String[] genres, int[] plays) {
+        Map<String, Integer> indexMap = new HashMap<String, Integer>();
+        List<GenreNode> list = new ArrayList<GenreNode>();
+
         for (int i = 0; i < genres.length; i++) {
-            PlaysNode playsNode = new PlaysNode(i, plays[i]);
-            map.put(genres[i], playsNode);
+            if(indexMap.containsKey(genres[i])){
+                //list.get(indexMap.get(genres[i]))
+            }else{
+                GenreNode genreNode = new GenreNode(genres[i], i, plays[i]);
+            }
+
+            //list.add(list.size(), genreNode);
         }
-        return map;
+        list.sort((o1, o2) -> o1.getTotalPlay()>o2.getTotalPlay()?0:1);
+        return list;
     }
 
 
-    static class PlaysNode{
+    static class GenreNode {
         private long totalPlay = 0;
-        private HashSet<HashMap<Integer, Integer>> songPlay = new HashSet<HashMap<Integer, Integer>>();
+        private String name;
+        private List<HashMap<Integer, Integer>> songPlay = new ArrayList<HashMap<Integer, Integer>>();
 
-        PlaysNode(int no, int play){
+        GenreNode(String name, int no, int play){
             totalPlay += play;
             HashMap<Integer, Integer> song = new HashMap<Integer, Integer>(no, play);
             songPlay.add(song);
@@ -84,11 +91,19 @@ public class BestAlbum {
             this.totalPlay = totalPlay;
         }
 
-        public HashSet<HashMap<Integer, Integer>> getSongPlay() {
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public List<HashMap<Integer, Integer>> getSongPlay() {
             return songPlay;
         }
 
-        public void setSongPlay(HashSet<HashMap<Integer, Integer>> songPlay) {
+        public void setSongPlay(List<HashMap<Integer, Integer>> songPlay) {
             this.songPlay = songPlay;
         }
     }
