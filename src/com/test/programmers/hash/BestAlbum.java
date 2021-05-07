@@ -1,6 +1,7 @@
 package com.test.programmers.hash;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BestAlbum {
 
@@ -38,16 +39,16 @@ public class BestAlbum {
 
 
     public static void main(String[] args) {
-        String[] genres = {"classic", "pop", "classic", "classic", "pop", "ttt"};
-        int[] plays = {500, 600, 150, 800, 2500, 299};
+        String[] genres = {"classic", "pop", "classic", "classic", "pop", "ttt", "classic"};
+        int[] plays = {500, 600, 150, 800, 2500, 299, 800};
 
         BestAlbum bestAlbum = new BestAlbum();
         int[] solution = bestAlbum.solution(genres, plays);
-        System.out.println("Arrays.asList(solution) = " + Arrays.asList(solution));
+        System.out.println(Arrays.toString(solution));
     }
 
     public int[] solution(String[] genres, int[] plays) {
-        int[] answer = {};
+        int[] answer;
 
         // 리스트 생성
         List<GenreNode> genreNodeList = initList(genres, plays);
@@ -62,27 +63,29 @@ public class BestAlbum {
                 return -1;
             }
         });
+
+        Vector<Integer> answerList = new Vector<>();
         genreNodeList.forEach(o->{
-            answer
-            o.getSongList().stream().max((o1, o2)->{
-                o1.
-            })
-
+            List<Map.Entry<Integer, Integer>> songList = o.getSongMap().entrySet().stream().sorted((o1, o2) -> {
+                if (o1.getValue().compareTo(o2.getValue()) < 0) {
+                    return 1;
+                } else if (o1.getValue().compareTo(o2.getValue()) == 0) {
+                    if (o1.getKey().compareTo(o2.getKey()) > 0) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                } else {
+                    return -1;
+                }
+            }).collect(Collectors.toList());
+            
+            for(int i = 0 ; i<songList.size() && i<2 ; i++){
+                answerList.add(songList.get(i).getKey());
+            }
         });
-       // genreNodeList.stream().
+        answer =  answerList.stream().mapToInt(Integer::intValue).toArray();
 
-
-        for (int i = 0; i < genreNodeList.size(); i++) {
-            System.out.println("genreNode.getTotalPlay() = " + genreNodeList.get(i).getTotalPlay());
-        }
-        GenreNode temp = genreNodeList.get(1);
-        //genreNodeList.remove
-
-        for (int i = 0; i < genreNodeList.size(); i++) {
-            System.out.println("genreNode.getTotalPlay() = " + genreNodeList.get(i).getTotalPlay());
-        }
-
-        //System.out.println("genreNodeList = " + genreNodeList);
         return answer;
     }
 
@@ -107,7 +110,7 @@ public class BestAlbum {
     static class GenreNode {
         private long totalPlay = 0;
         private String name;
-        private List<HashMap<Integer, Integer>> songList = new ArrayList<HashMap<Integer, Integer>>();
+        private HashMap<Integer, Integer> songMap = new HashMap<Integer, Integer>();
 
         GenreNode(String name, int no, int play){
             this.name = name;
@@ -116,8 +119,7 @@ public class BestAlbum {
 
         public void addSong(int no, int play){
             totalPlay += play;
-            HashMap<Integer, Integer> song = new HashMap<Integer, Integer>(no, play);
-            songList.add(song);
+            songMap.put(no, play);
         }
 
         public long getTotalPlay() {
@@ -136,12 +138,12 @@ public class BestAlbum {
             this.name = name;
         }
 
-        public List<HashMap<Integer, Integer>> getSongList() {
-            return songList;
+        public HashMap<Integer, Integer> getSongMap() {
+            return songMap;
         }
 
-        public void setSongList(List<HashMap<Integer, Integer>> songList) {
-            this.songList = songList;
+        public void setSongMap(HashMap<Integer, Integer> songMap) {
+            this.songMap = songMap;
         }
     }
 }
