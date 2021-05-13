@@ -1,9 +1,6 @@
 package com.test.programmers.heap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MoreSpicy {
@@ -47,8 +44,18 @@ public class MoreSpicy {
 
     public int solution(int[] scoville, int K) {
         int answer = 0;
-
-        //R collect = Arrays.stream(scoville).map(Integer::new).collect(Collectors.toList());
+        PriorityQueue<Integer> queue = new PriorityQueue<>(Arrays.stream(scoville).boxed().collect(Collectors.toList()));
+        while(queue.size() > 1){
+            if(queue.peek() < K){
+                answer++;
+                queue.add(queue.poll() + queue.poll()*2);
+            }else{
+                break;
+            }
+        }
+        if(queue.peek() < K){
+            answer = -1;
+        }
         return answer;
     }
 }
