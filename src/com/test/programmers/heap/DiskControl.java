@@ -83,13 +83,7 @@ public class DiskControl {
     }
 
     private int getAvgTimeWithRegularSequence(Queue<Task> jobs) {
-        Queue<Task> processQueue = new PriorityQueue<>((o1, o2) -> {
-            if(o1.getInTime() == o2.getInTime()){
-                return Integer.compare(o1.getWorkTime(), o2.getWorkTime());
-            }else{
-                return Integer.compare(o1.getInTime(), o2.getInTime());
-            }
-        });
+        Queue<Task> processQueue = new LinkedList<>();
 
         return getAgvTime(jobs, processQueue);
     }
