@@ -55,7 +55,9 @@ public class DiskControl {
      */
 
     public static void main(String[] args) {
-        int[][] jobs = {{0, 3}, {1, 9}, {2, 6}};
+        //int[][] jobs = {{0, 3}, {1, 9}, {2, 6}};
+        //int[][] jobs = {{24, 10}, {18, 39}, {34, 20}, {37, 5}, {47, 22}, {20, 47}, {15, 34}, {15, 2}, {35, 43}, {26, 1}};
+        int[][] jobs = {{24, 10}, {28, 39}, {43, 20}, {37, 5}, {47, 22}, {20, 47}, {15, 34}, {15, 2}, {35, 43}, {26, 1}};
         DiskControl diskControl = new DiskControl();
         int solution = diskControl.solution(jobs);
 
@@ -73,7 +75,13 @@ public class DiskControl {
     }
 
     private Queue<Task> getTaskQueue(int[][] jobs) {
-        Queue<Task> taskQueue = new LinkedList<>();
+        Queue<Task> taskQueue = new PriorityQueue<>((o1, o2) -> {
+            if(o1.getInTime() == o2.getInTime()){
+                return Long.compare(o1.getWorkTime(), o2.getWorkTime());
+            }else{
+                return Long.compare(o1.getInTime(), o2.getInTime());
+            }
+        });
 
         for (int[] job : jobs) {
             Task task = new Task(job[0], job[1]);
@@ -91,9 +99,9 @@ public class DiskControl {
     private int getAvgTimeWithPrioritySequence(Queue<Task> jobs) {
         Queue<Task> processQueue = new PriorityQueue<>((o1, o2) -> {
             if(o1.getWorkTime() == o2.getWorkTime()){
-                return Integer.compare(o1.getInTime(), o2.getInTime());
+                return Long.compare(o1.getInTime(), o2.getInTime());
             }else{
-                return Integer.compare(o1.getWorkTime(), o2.getWorkTime());
+                return Long.compare(o1.getWorkTime(), o2.getWorkTime());
             }
         });
 
@@ -112,54 +120,26 @@ public class DiskControl {
                 totalCompleteCount++;
                 totalCompleteTime += currentTimeStamp - currentTask.getInTime();
                 currentTask = null;
+                
+            }
+
+            if(processQueue.isEmpty() && !jobs.isEmpty()){
+                 if(currentTimeStamp < jobs.peek().getInTime()){
+                     currentTimeStamp = jobs.peek().getInTime();
+                 }
             }
 
             while(!jobs.isEmpty() && jobs.peek().getInTime() <= currentTimeStamp){
                 processQueue.add(jobs.poll());
             }
 
-            if(currentTask == null){
-                if(processQueue.isEmpty() && !jobs.isEmpty()){
-                    currentTimeStamp = jobs.peek().getInTime();
-                    while(!jobs.isEmpty() && jobs.peek().getInTime() <= currentTimeStamp){
-                        processQueue.add(jobs.poll());
-                    }
-                }
-                currentTask = processQueue.poll();
-                if(currentTask!=null && currentTimeStamp < currentTask.getInTime()){
-                    currentTimeStamp = currentTask.getInTime();
-                }
-            }
+            currentTask = processQueue.poll();
         }
 
         return (int)Math.floor(totalCompleteCount==0?0:totalCompleteTime/totalCompleteCount);
     }
 
-    static class Task{
-        int inTime;
-        int workTime;
 
-        Task(int inTime, int workTime){
-            this.inTime = inTime;
-            this.workTime = workTime;
-        }
-
-        public int getInTime() {
-            return inTime;
-        }
-
-        public int getWorkTime() {
-            return workTime;
-        }
-
-        public void setInTime(int inTime) {
-            this.inTime = inTime;
-        }
-
-        public void setWorkTime(int workTime) {
-            this.workTime = workTime;
-        }
-    }
 
     /*public int solution(int[][] jobs) {
         int answer = 0;
@@ -257,4 +237,30 @@ public class DiskControl {
             this.workTime = workTime;
         }
     }*/
+}
+
+class Task{
+    long inTime;
+    long workTime;
+
+    Task(long inTime, long workTime){
+        this.inTime = inTime;
+        this.workTime = workTime;
+    }
+
+    public long getInTime() {
+        return inTime;
+    }
+
+    public long getWorkTime() {
+        return workTime;
+    }
+
+    public void setInTime(long inTime) {
+        this.inTime = inTime;
+    }
+
+    public void setWorkTime(long workTime) {
+        this.workTime = workTime;
+    }
 }
