@@ -39,6 +39,12 @@ public class MaximumNumber {
 
         List<String> strNumbers = Arrays.stream(numbers).mapToObj(String::valueOf).collect(Collectors.toList());
         strNumbers.sort((s1, s2)->{
+            boolean biggerflag = false;
+            for(int i = 0; i < s2.length()-s1.length()+1; i++){
+                if(s2.substring(i,s1.length()).startsWith(s1)){
+
+                }
+            }
             if(s2.startsWith(s1)){
 
                 return 0;
