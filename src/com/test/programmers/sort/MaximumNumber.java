@@ -31,12 +31,6 @@ public class MaximumNumber {
         //int[] numbers = {3, 30, 34, 5, 9};
         int[] numbers = {3, 30, 34};
         //int[] numbers = {89,898,8};
-        System.out.println(" = " + String.valueOf(0));
-        System.out.println("\"10\".compareTo(\"20\") = " + "10".compareTo("20"));
-        System.out.println("\"20\".compareTo(\"10\") = " + "20".compareTo("10"));
-        System.out.println("\"3\".compareTo(\"0\") = " + "3".compareTo("0"));
-        System.out.println("\"30\".substring(1, 1) = " + "30".substring(1, 2));
-        System.out.println("\"3\".compareTo(\"30\".substring(1,1)) = " + "3".compareTo("30".substring(1, 1)));
         String solution = maximumNumber.solution(numbers);
         System.out.println("solution = " + solution);
     }
@@ -74,12 +68,4 @@ public class MaximumNumber {
             }
         }
     }
-
-    /*public int campareSubString(String s1, String s2){
-        if(s1.length() > s2.length()){
-            return 0;
-        }else{
-
-        }
-    }*/
 }
