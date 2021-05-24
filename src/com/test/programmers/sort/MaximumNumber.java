@@ -1,7 +1,7 @@
 package com.test.programmers.sort;
 
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,32 +28,58 @@ public class MaximumNumber {
 
     public static void main(String[] args) {
         MaximumNumber maximumNumber = new MaximumNumber();
-        int[] numbers = {3, 30, 34, 5, 9};
+        //int[] numbers = {3, 30, 34, 5, 9};
+        int[] numbers = {3, 30, 34};
+        //int[] numbers = {89,898,8};
+        System.out.println(" = " + String.valueOf(0));
+        System.out.println("\"10\".compareTo(\"20\") = " + "10".compareTo("20"));
+        System.out.println("\"20\".compareTo(\"10\") = " + "20".compareTo("10"));
+        System.out.println("\"3\".compareTo(\"0\") = " + "3".compareTo("0"));
+        System.out.println("\"30\".substring(1, 1) = " + "30".substring(1, 2));
+        System.out.println("\"3\".compareTo(\"30\".substring(1,1)) = " + "3".compareTo("30".substring(1, 1)));
         String solution = maximumNumber.solution(numbers);
         System.out.println("solution = " + solution);
     }
 
     public String solution(int[] numbers) {
         String answer = "";
-        //StringBuffer asdf = new StringBuffer("asdf");
 
-        List<String> strNumbers = Arrays.stream(numbers).mapToObj(String::valueOf).collect(Collectors.toList());
-        strNumbers.sort((s1, s2)->{
-            boolean biggerflag = false;
-            for(int i = 0; i < s2.length()-s1.length()+1; i++){
-                if(s2.substring(i,s1.length()).startsWith(s1)){
-
-                }
-            }
-            if(s2.startsWith(s1)){
-
-                return 0;
-            }else{
-                return s2.compareTo(s1);
-            }
-        });
-        answer = strNumbers.stream().reduce(String::concat).orElse("");
-
+        List<String> strNumbers = Arrays.stream(numbers)
+                .mapToObj(String::valueOf)
+                .sorted(this::compareSubString)
+                .collect(Collectors.toList());
+        Collections.reverse(strNumbers);
+        if(strNumbers.get(0).equals("0")){
+            answer = "0";
+        }else{
+            answer = strNumbers.stream().reduce(String::concat).orElse("");
+        }
         return answer;
     }
+
+    private int compareSubString(String s1, String s2) {
+        if(s1.length() == s2.length()){
+            return s1.compareTo(s2);
+        }else if(s1.length() > s2.length()){
+            if(s1.startsWith(s2)){
+                return compareSubString(s1.substring(s2.length()), s2);
+            }else{
+                return s1.substring(0, s2.length()).compareTo(s2);
+            }
+        }else{
+            if(s2.startsWith(s1)){
+                return compareSubString(s1, s2.substring(s1.length()));
+            }else{
+                return s1.compareTo(s2.substring(0, s1.length()));
+            }
+        }
+    }
+
+    /*public int campareSubString(String s1, String s2){
+        if(s1.length() > s2.length()){
+            return 0;
+        }else{
+
+        }
+    }*/
 }
